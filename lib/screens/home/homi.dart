@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:safar/HomePage.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -8,9 +9,35 @@ class Homi extends StatefulWidget {
 }
 
 class _HomiState extends State<Homi> {
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  final Geolocator _geolocator = Geolocator();
+  var pos;
   void _navigateToHome() {
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (BuildContext context) => HomePage()));
+  }
+
+  Position _currentPosition;
+
+  _getCurrentLocation() async {
+    await _geolocator
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) async {
+      setState(() {
+        // Store the position in the variable
+        _currentPosition = position;
+
+        print('CURRENT POS: $_currentPosition');
+        pos = position;
+      });
+    }).catchError((e) {
+      print(e);
+    });
   }
 
   @override
@@ -81,8 +108,7 @@ class _HomiState extends State<Homi> {
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 15.0, top: 3.0),
-                            child: Text("YOUR COORDINATES",
-                                style: TextStyle(fontSize: 16)),
+                            child: Text("$pos", style: TextStyle(fontSize: 16)),
                           ),
                         ],
                       ),
