@@ -1,4 +1,10 @@
 # safar
+This app's purpose is to help tourists in Pakistan and guide them
+this app has maps and other features aswell this project and anything under the label 
+of Safar is the private and itellectual property of Hamas ur Rehman and if found used 
+by someone else without permission or consent will be liable to charges under the crimes of stealing copyright content AKA copyright infringment.
+
+
 
 An app that helps tourists in Pakistan
 
