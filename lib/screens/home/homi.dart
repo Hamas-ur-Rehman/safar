@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:safar/HomePage.dart';
@@ -13,6 +14,16 @@ class _HomiState extends State<Homi> {
   void initState() {
     super.initState();
     _getCurrentLocation();
+    getCurrentUserInfo();
+  }
+
+  final _auth = FirebaseAuth.instance;
+  dynamic user;
+  String userEmail;
+
+  void getCurrentUserInfo() async {
+    user = await _auth.currentUser();
+    userEmail = user.email;
   }
 
   final Geolocator _geolocator = Geolocator();
@@ -144,24 +155,17 @@ class _HomiState extends State<Homi> {
               Padding(
                 padding: const EdgeInsets.only(top: 48.0),
                 child: new Container(
-                  height: 48.00,
-                  width: 296.00,
-                  decoration: BoxDecoration(
-                    color: Color(0xffffffff),
-                    border: Border.all(
-                      width: 1.00,
-                      color: Color(0xff707070),
+                    height: 48.00,
+                    width: 296.00,
+                    decoration: BoxDecoration(
+                      color: Color(0xffffffff),
+                      border: Border.all(
+                        width: 1.00,
+                        color: Color(0xff707070),
+                      ),
+                      borderRadius: BorderRadius.circular(26.00),
                     ),
-                    borderRadius: BorderRadius.circular(26.00),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 15.0, top: 13.0),
-                    child: Text(
-                      "Email",
-                      style: TextStyle(color: Colors.grey[800], fontSize: 15),
-                    ),
-                  ),
-                ),
+                    child: Text(userEmail) ?? "Email"),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 15.0),
