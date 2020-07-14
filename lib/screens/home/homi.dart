@@ -19,11 +19,13 @@ class _HomiState extends State<Homi> {
 
   final _auth = FirebaseAuth.instance;
   dynamic user;
-  String userEmail;
+  String userEmail = "Email";
+  dynamic created = "null";
 
   void getCurrentUserInfo() async {
     user = await _auth.currentUser();
     userEmail = user.email;
+    created = user.metadata.creationTime;
   }
 
   final Geolocator _geolocator = Geolocator();
@@ -44,7 +46,7 @@ class _HomiState extends State<Homi> {
         _currentPosition = position;
 
         print('CURRENT POS: $_currentPosition');
-        pos = position;
+        pos = position.toString();
       });
     }).catchError((e) {
       print(e);
@@ -119,7 +121,9 @@ class _HomiState extends State<Homi> {
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 15.0, top: 3.0),
-                            child: Text("$pos", style: TextStyle(fontSize: 16)),
+                            child: Text("$pos",
+                                style: TextStyle(fontSize: 16) ??
+                                    "Your coordintaes"),
                           ),
                         ],
                       ),
@@ -165,7 +169,21 @@ class _HomiState extends State<Homi> {
                       ),
                       borderRadius: BorderRadius.circular(26.00),
                     ),
-                    child: Text(userEmail) ?? "Email"),
+                    child: Padding(
+                        padding: const EdgeInsets.only(left: 15.0, top: 2.0),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Icon(Icons.mail, color: Colors.black),
+                            ),
+                            Expanded(
+                              child: Text(userEmail,
+                                  style: TextStyle(
+                                      color: Colors.grey[800], fontSize: 15)),
+                            ),
+                          ],
+                        ))),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 15.0),
@@ -183,8 +201,9 @@ class _HomiState extends State<Homi> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 15.0, top: 13.0),
                     child: Text(
-                      "Account created date",
-                      style: TextStyle(color: Colors.grey[800], fontSize: 15),
+                      created,
+                      style: TextStyle(color: Colors.grey[800], fontSize: 15) ??
+                          "Account created date",
                     ),
                   ),
                 ),
