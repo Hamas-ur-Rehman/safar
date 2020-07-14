@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "554991745658",
+    "firebase_url": "https://safar-282118.firebaseio.com",
+    "project_id": "safar-282118",
+    "storage_bucket": "safar-282118.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554991745658:android:5d21dd0eb989a79b3259c3",
+        "android_client_info": {
+          "package_name": "com.isodev.safar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "554991745658-epha406k9hknp4eti3jmd05r4tagagbq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxRiMY7pVNQfbKfVHzWaflSNeGGVy-gDw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "554991745658-epha406k9hknp4eti3jmd05r4tagagbq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
