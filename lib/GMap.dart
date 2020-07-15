@@ -426,7 +426,7 @@ class GMapxState extends State<GMapx> {
             },
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 340.0, top: 90),
+            padding: const EdgeInsets.only(top: 88.0, left: 15.0),
             child: ClipOval(
               child: Material(
                 color: Colors.white, // button color
