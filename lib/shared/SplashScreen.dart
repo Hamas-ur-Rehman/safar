@@ -35,8 +35,8 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             Shimmer.fromColors(
               period: Duration(milliseconds: 1500),
-              baseColor: Colors.white,
-              highlightColor: Colors.grey,
+              baseColor: HexToColor('#202040'),
+              highlightColor: HexToColor('#FF1C68'),
               child: Container(
                 padding: EdgeInsets.all(16.0),
                 child: Center(
@@ -86,4 +86,12 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
     );
   }
+}
+
+class HexToColor extends Color {
+  static _hexToColor(String code) {
+    return int.parse(code.substring(1, 7), radix: 16) + 0xFF000000;
+  }
+
+  HexToColor(final String code) : super(_hexToColor(code));
 }

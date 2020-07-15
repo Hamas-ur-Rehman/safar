@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:safar/HomePage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:safar/screens/home/Home.dart';
 import 'package:safar/screens/home/Nav.dart';
+import 'package:safar/services/utilityx.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:intl/intl.dart';
 
@@ -18,6 +21,7 @@ class _HomiState extends State<Homi> {
     super.initState();
     _getCurrentLocation();
     getCurrentUserInfo();
+    loadImageFromPreferences();
   }
 
   final _auth = FirebaseAuth.instance;
@@ -56,6 +60,55 @@ class _HomiState extends State<Homi> {
     });
   }
 
+  Future<File> imageFile;
+  Image imageFromPreferences;
+
+  pickImageFromGallery(ImageSource source) {
+    setState(() {
+      imageFile = ImagePicker.pickImage(source: source);
+    });
+  }
+
+  loadImageFromPreferences() {
+    Utility.getImageFromPreferences().then((img) {
+      if (null == img) {
+        return;
+      }
+      setState(() {
+        imageFromPreferences = Utility.imageFromBase64String(img);
+      });
+    });
+  }
+
+  Widget imageFromGallery() {
+    return FutureBuilder<File>(
+      future: imageFile,
+      builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
+        if (snapshot.connectionState == ConnectionState.done &&
+            null != snapshot.data) {
+          //print(snapshot.data.path);
+          Utility.saveImageToPreferences(
+              Utility.base64String(snapshot.data.readAsBytesSync()));
+          return Image.file(
+            snapshot.data,
+          );
+        } else if (null != snapshot.error) {
+          return const Text(
+            'Error Picking Image',
+            textAlign: TextAlign.center,
+          );
+        } else {
+          return imageFromPreferences ??
+              Icon(
+                Icons.person,
+                color: Colors.white,
+                size: 55,
+              );
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,7 +145,7 @@ class _HomiState extends State<Homi> {
                     ),
                     child: IconButton(
                         splashColor: Colors.white,
-                        icon: Icon(Icons.email, color: Colors.white),
+                        icon: Icon(Icons.share, color: Colors.white),
                         onPressed: () {}),
                   )
                 ],
@@ -104,7 +157,7 @@ class _HomiState extends State<Homi> {
                     padding: const EdgeInsets.only(top: 83.0),
                     child: new Container(
                       height: 48.00,
-                      width: 300.00,
+                      width: 320.00,
                       decoration: BoxDecoration(
                         color: Color(0xffffffff),
                         border: Border.all(
@@ -124,7 +177,7 @@ class _HomiState extends State<Homi> {
                                   Icon(Icons.location_on, color: Colors.black),
                             ),
                             Text("$pos",
-                                style: TextStyle(fontSize: 16) ??
+                                style: TextStyle(fontSize: 14) ??
                                     "Your coordintaes"),
                           ],
                         ),
@@ -136,21 +189,61 @@ class _HomiState extends State<Homi> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 148.0),
-                    child: new Container(
-                      height: 120.00,
-                      width: 120.00,
-                      decoration: BoxDecoration(
-                        color: Color(0xff515fd5),
-                        border: Border.all(
-                          width: 5.00,
-                          color: Color(0xffffffff),
-                        ),
-                        shape: BoxShape.circle,
-                      ),
+                  Stack(children: [
+                    Column(
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.only(top: 148.0),
+                            child: new Container(
+                                height: 120.00,
+                                width: 120.00,
+                                decoration: BoxDecoration(
+                                  color: Color(0xff515fd5),
+                                  border: Border.all(
+                                    width: 5.00,
+                                    color: Color(0xffffffff),
+                                  ),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Center(
+                                    child: Container(
+                                        width: 110,
+                                        height: 110,
+                                        child: ClipOval(
+                                          child: imageFromGallery(),
+                                        ))))),
+                      ],
                     ),
-                  ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: GestureDetector(
+                        onTap: () {
+                          pickImageFromGallery(ImageSource.gallery);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 237.0, left: 85),
+                          child: new Container(
+                            height: 29.00,
+                            width: 30.00,
+                            decoration: BoxDecoration(
+                              color: Color(0xffffffff),
+                              border: Border.all(
+                                width: 1.00,
+                                color: Color(0xffffffff),
+                              ),
+                              borderRadius: BorderRadius.all(
+                                  Radius.elliptical(30.00, 29.00)),
+                            ),
+                            child: Icon(
+                              Icons.camera_alt,
+                              color: HexToColor('#202040'),
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ]),
                 ],
               )
             ],
