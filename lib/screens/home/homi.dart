@@ -2,7 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:safar/HomePage.dart';
+import 'package:safar/screens/home/Home.dart';
+import 'package:safar/screens/home/Nav.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:intl/intl.dart';
 
 class Homi extends StatefulWidget {
   @override
@@ -20,19 +23,19 @@ class _HomiState extends State<Homi> {
   final _auth = FirebaseAuth.instance;
   dynamic user;
   String userEmail = "Email";
-  dynamic created = "null";
+  dynamic created = "Account created date";
 
   void getCurrentUserInfo() async {
     user = await _auth.currentUser();
     userEmail = user.email;
-    created = user.metadata.creationTime;
+    created =
+        DateFormat("MM/dd/yyyy").format(user.metadata.creationTime).toString();
   }
 
   final Geolocator _geolocator = Geolocator();
   var pos;
   void _navigateToHome() {
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (BuildContext context) => HomePage()));
+    Navigator.pop(context);
   }
 
   Position _currentPosition;
@@ -110,22 +113,21 @@ class _HomiState extends State<Homi> {
                         ),
                         borderRadius: BorderRadius.circular(26.00),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(top: 3.0, left: 10.0),
-                            child: Icon(Icons.location_on, color: Colors.black),
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 15.0, top: 3.0),
-                            child: Text("$pos",
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15.0, top: 2.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child:
+                                  Icon(Icons.location_on, color: Colors.black),
+                            ),
+                            Text("$pos",
                                 style: TextStyle(fontSize: 16) ??
                                     "Your coordintaes"),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -199,11 +201,20 @@ class _HomiState extends State<Homi> {
                     borderRadius: BorderRadius.circular(26.00),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 15.0, top: 13.0),
-                    child: Text(
-                      created,
-                      style: TextStyle(color: Colors.grey[800], fontSize: 15) ??
-                          "Account created date",
+                    padding: const EdgeInsets.only(left: 15.0, top: 2.0),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Icon(Icons.access_time, color: Colors.black),
+                        ),
+                        Text(
+                          created,
+                          style: TextStyle(
+                                  color: Colors.grey[800], fontSize: 15) ??
+                              "Account created date",
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -211,94 +222,106 @@ class _HomiState extends State<Homi> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 28.0),
-                    child: new Container(
-                      height: 137.00,
-                      width: 144.00,
-                      decoration: BoxDecoration(
-                        color: Color(0xffffffff),
-                        border: Border.all(
-                          width: 1.00,
-                          color: Color(0xff707070),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          new MaterialPageRoute(builder: (context) => Home()));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 28.0),
+                      child: new Container(
+                        height: 137.00,
+                        width: 144.00,
+                        decoration: BoxDecoration(
+                          color: Color(0xffffffff),
+                          border: Border.all(
+                            width: 1.00,
+                            color: Color(0xff707070),
+                          ),
+                          image: const DecorationImage(
+                            image: NetworkImage(
+                                'https://img.freepik.com/free-vector/travel-blogging-online-outdoor-park-streaming-male-character-sport-internet-broadcasting-host-isolated-white-flat-illustration_109722-1486.jpg?size=626&ext=jpg'),
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.circular(26.00),
                         ),
-                        image: const DecorationImage(
-                          image: NetworkImage(
-                              'https://img.freepik.com/free-vector/travel-blogging-online-outdoor-park-streaming-male-character-sport-internet-broadcasting-host-isolated-white-flat-illustration_109722-1486.jpg?size=626&ext=jpg'),
-                          fit: BoxFit.cover,
-                        ),
-                        borderRadius: BorderRadius.circular(26.00),
-                      ),
-                      child: Shimmer.fromColors(
-                        period: Duration(milliseconds: 1500),
-                        baseColor: HexToColor('#202040'),
-                        highlightColor: HexToColor('#FF1C68'),
-                        child: Container(
-                          padding: EdgeInsets.all(16.0),
-                          child: Center(
-                            child: Column(
-                              children: [
-                                Text(
-                                  "blogs",
-                                  style: TextStyle(
-                                      fontSize: 23.0,
-                                      fontFamily: 'Pacifico',
-                                      shadows: <Shadow>[
-                                        Shadow(
-                                            blurRadius: 18.0,
-                                            color: Colors.black87,
-                                            offset:
-                                                Offset.fromDirection(120, 12))
-                                      ]),
-                                ),
-                              ],
+                        child: Shimmer.fromColors(
+                          period: Duration(milliseconds: 1500),
+                          baseColor: HexToColor('#202040'),
+                          highlightColor: HexToColor('#FF1C68'),
+                          child: Container(
+                            padding: EdgeInsets.all(16.0),
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "blogs",
+                                    style: TextStyle(
+                                        fontSize: 23.0,
+                                        fontFamily: 'Pacifico',
+                                        shadows: <Shadow>[
+                                          Shadow(
+                                              blurRadius: 18.0,
+                                              color: Colors.black87,
+                                              offset:
+                                                  Offset.fromDirection(120, 12))
+                                        ]),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 28.0, left: 10.0),
-                    child: new Container(
-                      height: 137.00,
-                      width: 144.00,
-                      decoration: BoxDecoration(
-                        color: Color(0xffffffff),
-                        border: Border.all(
-                          width: 1.00,
-                          color: Color(0xff707070),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          new MaterialPageRoute(builder: (context) => Nav()));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 28.0, left: 10.0),
+                      child: new Container(
+                        height: 137.00,
+                        width: 144.00,
+                        decoration: BoxDecoration(
+                          color: Color(0xffffffff),
+                          border: Border.all(
+                            width: 1.00,
+                            color: Color(0xff707070),
+                          ),
+                          image: const DecorationImage(
+                            image: NetworkImage(
+                                'https://assets.awwwards.com/awards/images/2019/05/illustration-web-design-2-cover.jpg'),
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.circular(26.00),
                         ),
-                        image: const DecorationImage(
-                          image: NetworkImage(
-                              'https://assets.awwwards.com/awards/images/2019/05/illustration-web-design-2-cover.jpg'),
-                          fit: BoxFit.cover,
-                        ),
-                        borderRadius: BorderRadius.circular(26.00),
-                      ),
-                      child: Shimmer.fromColors(
-                        period: Duration(milliseconds: 1500),
-                        baseColor: HexToColor('#202040'),
-                        highlightColor: HexToColor('#FF1C68'),
-                        child: Container(
-                          padding: EdgeInsets.all(16.0),
-                          child: Center(
-                            child: Column(
-                              children: [
-                                Text(
-                                  "website",
-                                  style: TextStyle(
-                                      fontSize: 23.0,
-                                      fontFamily: 'Pacifico',
-                                      shadows: <Shadow>[
-                                        Shadow(
-                                            blurRadius: 18.0,
-                                            color: Colors.black87,
-                                            offset:
-                                                Offset.fromDirection(120, 12))
-                                      ]),
-                                ),
-                              ],
+                        child: Shimmer.fromColors(
+                          period: Duration(milliseconds: 1500),
+                          baseColor: HexToColor('#202040'),
+                          highlightColor: HexToColor('#FF1C68'),
+                          child: Container(
+                            padding: EdgeInsets.all(16.0),
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "website",
+                                    style: TextStyle(
+                                        fontSize: 23.0,
+                                        fontFamily: 'Pacifico',
+                                        shadows: <Shadow>[
+                                          Shadow(
+                                              blurRadius: 18.0,
+                                              color: Colors.black87,
+                                              offset:
+                                                  Offset.fromDirection(120, 12))
+                                        ]),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

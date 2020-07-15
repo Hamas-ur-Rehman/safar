@@ -16,7 +16,7 @@ class _NavState extends State<Nav> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text("Safar Blog Site"),
+        title: Text("Safar Website"),
       ),
       body: WebView(
           initialUrl: "https://safarpk.weebly.com/",
