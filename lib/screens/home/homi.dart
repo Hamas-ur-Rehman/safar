@@ -141,12 +141,14 @@ class _HomiState extends State<Homi> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                      top: 18.0,
+                      top: 19.0,
                     ),
                     child: IconButton(
                         splashColor: Colors.white,
-                        icon: Icon(Icons.share, color: Colors.white),
-                        onPressed: () {}),
+                        icon: Icon(Icons.exit_to_app, color: Colors.white),
+                        onPressed: () async {
+                          await _auth.signOut();
+                        }),
                   )
                 ],
               ),

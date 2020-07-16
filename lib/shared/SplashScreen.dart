@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             Shimmer.fromColors(
               period: Duration(milliseconds: 1500),
-              baseColor: HexToColor('#202040'),
+              baseColor: Colors.deepPurple,
               highlightColor: HexToColor('#FF1C68'),
               child: Container(
                 padding: EdgeInsets.all(16.0),
