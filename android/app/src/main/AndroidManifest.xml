@@ -7,10 +7,11 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="safar"
+        android:label="Safar"
         android:icon="@mipmap/launcher_icon">
          <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyBiHG1YGjgo3SFTBnk6dYs07gNkMx-GmmM"/>
